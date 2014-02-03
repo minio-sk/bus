@@ -1,3 +1,3 @@
-module Bus
-  VERSION = "0.0.1"
+class Bus
+  VERSION = '0.0.2'
 end
