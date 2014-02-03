@@ -2,6 +2,8 @@
 
 Extremely lightweight message bus without mixins, globals or mutable state.
 
+[![Build Status](https://travis-ci.org/minio-sk/bus.png)](https://travis-ci.org/minio-sk/bus)
+
 ## Installation
 
 Add this line to your application's Gemfile:
