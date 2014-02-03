@@ -1,6 +1,6 @@
 # Bus
 
-Extremely lightweight message bus without mixins, globals and mutable state.
+Extremely lightweight message bus without mixins, globals or mutable state.
 
 ## Installation
 
