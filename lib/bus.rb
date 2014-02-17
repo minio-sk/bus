@@ -1,6 +1,8 @@
 require 'bus/version'
 
 class Bus
+  class NoListenerRespondedError < RuntimeError; end
+
   def initialize(listeners = [])
     @listeners = listeners
   end
@@ -15,9 +17,14 @@ class Bus
   end
 
   def method_missing(method_name, *args)
+    responded = false
     @listeners.each do |listener|
-      listener.public_send(method_name, *args) if listener.respond_to?(method_name)
+      if listener.respond_to?(method_name)
+        responded = true
+        listener.public_send(method_name, *args)
+      end
     end
+    raise NoListenerRespondedError.new("No listener responded to message '#{method_name}'") unless responded
   end
 
   private

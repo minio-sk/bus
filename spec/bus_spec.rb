@@ -21,10 +21,11 @@ describe Bus do
   end
 
   it 'does not call listener if it does not respond to event' do
-    listener = double(respond_to?: false)
-    bus = subject.attach(listener)
+    non_responding_listener = double(respond_to?: false)
+    responding_listener = double.as_null_object
+    bus = subject.attach(non_responding_listener).attach(responding_listener)
 
-    expect(listener).not_to receive(:event_fired)
+    expect(non_responding_listener).not_to receive(:event_fired)
 
     bus.event_fired
   end
@@ -55,5 +56,9 @@ describe Bus do
     expect(listener).to receive(:call).with(:args)
 
     bus.event_fired(:args)
+  end
+
+  it 'throws an exception when no listener responds' do
+    expect { subject.event_fired }.to raise_error(Bus::NoListenerRespondedError, 'No listener responded to message \'event_fired\'')
   end
 end
