@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-# global config or initializer
+# global config or initializer or application controller
 bus = Bus.new([
   DonationReceipt,
   RealtimeViewerUpdate
@@ -43,6 +43,13 @@ class DonationsController # < ActionController::Base
     )
 
     DonationService.new.add_donation(current_user, params[:donation], listener)
+    
+    # or
+    
+    DonationService.new.add_donation(current_user, params[:donation], bus.on(
+      donation_created: ->(donation) { send_user_to_payment_gateway(donation) },
+      donation_invalid: ->(donation) { render donation.errors, status: :bad_request }
+    ))
   end
 
   private
@@ -59,9 +66,8 @@ class DonationService
   end
 
   def add_donation(donor, donation_attributes, listener)
-    donation = @donation_class.new(donation_attributes.merge(donor: donor))
-    if donation.valid?
-      donation.save!
+    donation = donor.donations.build(donation_attributes)
+    if donation.save
       listener.donation_created(donation)
     else
       listener.donation_invalid(donation)
