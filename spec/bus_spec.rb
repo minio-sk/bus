@@ -5,7 +5,7 @@ describe Bus do
   let (:listener) { double }
 
   it 'calls attached listener' do
-    bus = described_class.new.attach(listener)
+    bus = subject.attach(listener)
 
     expect(listener).to receive(:event_fired)
 
@@ -52,6 +52,14 @@ describe Bus do
 
   it 'calls lightweight listener defined from block' do
     bus = subject.on(:event_fired) {|args| listener.call(args)} # event_fired { do stuff }
+
+    expect(listener).to receive(:call).with(:args)
+
+    bus.event_fired(:args)
+  end
+
+  it 'aliases on and when methods' do
+    bus = subject.when(:event_fired) {|args| listener.call(args)} # event_fired { do stuff }
 
     expect(listener).to receive(:call).with(:args)
 

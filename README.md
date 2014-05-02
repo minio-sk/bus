@@ -32,7 +32,7 @@ bus = Bus.new([
 class DonationsController # < ActionController::Base
   def create
     listener = bus.
-      on(:donation_created) {|donation| send_user_to_payment_gateway(donation) }.
+      on(:donation_created) {|donation| send_user_to_payment_gateway(donation) }. # NOTE the dot!
       on(:donation_invalid) {|donation| render donation.errors, status: :bad_request }
 
     # or
@@ -46,7 +46,7 @@ class DonationsController # < ActionController::Base
     
     # or
     
-    DonationService.new.add_donation(current_user, params[:donation], bus.on(
+    DonationService.new.add_donation(current_user, params[:donation], bus.when(
       donation_created: ->(donation) { send_user_to_payment_gateway(donation) },
       donation_invalid: ->(donation) { render donation.errors, status: :bad_request }
     ))
@@ -61,10 +61,6 @@ end
 
 # service
 class DonationService
-  def initialize(options={})
-    @donation_class = options.fetch(:donation_class) { Donation }
-  end
-
   def add_donation(donor, donation_attributes, listener)
     donation = donor.donations.build(donation_attributes)
     if donation.save

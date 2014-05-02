@@ -16,6 +16,8 @@ class Bus
     self.class.new(@listeners + listeners)
   end
 
+  alias :when :on
+
   def method_missing(method_name, *args)
     responded = false
     @listeners.each do |listener|
