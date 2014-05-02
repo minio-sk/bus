@@ -2,7 +2,7 @@
 
 Extremely lightweight message bus without mixins, globals or mutable state.
 
-[![Build Status](https://travis-ci.org/minio-sk/bus.png)](https://travis-ci.org/minio-sk/bus) [![Code Climate](https://codeclimate.com/github/minio-sk/bus.png)](https://codeclimate.com/github/minio-sk/bus)
+[![Build Status](https://travis-ci.org/minio-sk/bus.png)](https://travis-ci.org/minio-sk/bus) [![Code Climate](https://codeclimate.com/github/minio-sk/bus.png)](https://codeclimate.com/github/minio-sk/bus) [![Code coverage](https://codeclimate.com/github/minio-sk/bus/coverage.png)](https://codeclimate.com/github/minio-sk/bus)
 
 ## Installation
 
